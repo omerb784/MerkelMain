@@ -3,16 +3,24 @@
 **Crypto exchange simulation app**
 
 This project, is an app that simulating crypto exchange based on orderbook (csv data) and user input.
+
 The app read data from csv file, each row is an ask/bid on the order book.
+
 example: 2020/03/17 17:01:24.884492,ETH/BTC,bid,0.02187305,6.85567013
+
 This row means: a bid to buy ETH, willing to pay 0.02 BTC for each unit. Max ammount willing to buy is 6.85 ETH.
+
 
 **App flow**
 
 The user must insert money into his wallet to place an ask/bid on the orderbook.
+
 then the user can place an ask/bid offer.
+
 The app check if the user wallet contain enough currencies to place the offer.
+
 When pressing 9 (countinue) in the menu, the app move to next timestamp - and match ask to bid if there are possible matches.
+
 The app have 10 timestamps, and it reset every time it reach to the end (OrderBook::getNextTime).
 
 **Menu options**
