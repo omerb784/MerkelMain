@@ -1,4 +1,4 @@
-# MerkelMain
+# MerkelMain C++ OOP APP
 
 **Crypto exchange simulation app**
 
