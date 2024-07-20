@@ -13,7 +13,7 @@ This row means: a bid to buy ETH, willing to pay 0.02 BTC for each unit. Max amm
 
 **App flow**
 
-The user must insert money into his wallet to place an ask/bid on the orderbook.
+The user must insert money into his wallet to place an ask/bid into the orderbook.
 
 then the user can place an ask/bid offer.
 
