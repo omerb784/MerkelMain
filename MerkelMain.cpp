@@ -253,7 +253,7 @@ void merkelMain::printMenu()
            std::cout<<"Trancastion made for: "<<s<< ": " <<sales.size() << std::endl;
            for (orderBookEntry& sale : sales)
            {
-                std::cout << "Sale price: " << sale.price << " Sale ammount: " << sale.ammount << " "<< sale.userName << std::endl;
+                std::cout << "Sale price: " << sale.price << " Sale ammount: " << sale.ammount << "\nUser name:"<< sale.userName << std::endl;
                 if (sale.userName == "simuser")
                 {
                     if (sale.orderType == OrderBookType::bidSale)
@@ -269,7 +269,7 @@ void merkelMain::printMenu()
                 }
            }
 
-           std::cout << "Highest bid avilable change: " << orderBook.getHighestPriceChange(s,currnetTime) << std::endl;
+           std::cout << "\nHighest bid avilable change: " << orderBook.getHighestPriceChange(s,currnetTime) << std::endl;
            std::cout << "Lowest ask avilable change: " << orderBook.getLowestPriceChange(s, currnetTime)<< std::endl << std::endl;         
 
         }

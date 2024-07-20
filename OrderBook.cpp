@@ -136,7 +136,6 @@
             {
                 if (bid.price >= ask.price && bid.ammount > 0)
                 {
-                    std::cout << ask.userName << " bid " << bid.userName << std::endl;
                     orderBookEntry sale (ask.price, 0,  OrderBookType::askSale, timestamp, product);
                     if (bid.userName == "simuser")
                     {
@@ -145,9 +144,7 @@
                     }
                     if(ask.userName == "simuser")
                         sale.userName = "simuser";
-                     std::cout << sale.price << std::endl; 
                     
-
                     if (bid.ammount == ask.ammount)
                     {
                         sale.ammount = ask.ammount;
