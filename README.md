@@ -23,7 +23,7 @@ The app have 10 timestamps, and it reset every time it reach to the end (OrderBo
 0. Exit - exit from the app
 
 **Classes**
-1. CSVReader - read, tokenise, and transform into an object the csv data/user input.
+1. CSVReader - transform csv data/user input into an OrderBookEntry object.
 2. OrderBookEntry  - Represnt an object in our orderbook, each object is an offer (bid or ask).
 3. OrderBook - contain all orderBookEntry objects as an orderbook.
 4. Wallet - the user wallet.
@@ -31,9 +31,9 @@ The app have 10 timestamps, and it reset every time it reach to the end (OrderBo
 
 **App functionalities**
 1. OOP based project, main used only to init the app.
-2. Read,tokenise and validate data received from csv file.
-3. Read,tokenise and validate user input.
-4. 
+2. Read,tokenise and validate data received from csv file/user input.
+3. Create and implement logic to match asks to bids (OrderBook::matchAskToBid)
+
 
 
 
