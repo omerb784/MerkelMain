@@ -4,6 +4,7 @@
 #include "OrderBook.h"
 #include "Wallet.h"
 
+//the main app
 class merkelMain {
 
     public:

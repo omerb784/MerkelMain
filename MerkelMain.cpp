@@ -4,6 +4,7 @@
 #include <limits>
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
+// #include "UserDataValidation.h"
 
 
 merkelMain::merkelMain()
@@ -16,12 +17,11 @@ void merkelMain::init ()
     int input;
     currnetTime = orderBook.getEarliestTime();
     bool run = true;
-            printMenu();
     while (run)
     {
+        printMenu();    
         input = getUserOption();
         run = userProcessO(input);
-        printMenu();
     }
 }
     
@@ -90,7 +90,7 @@ void merkelMain::printMenu()
         std::cout << "Asks: "<< askEntries.size() <<std::endl;
         if (askEntries.size() > 0)
         {
-            std::cout << "Lowest price for this product: "<< orderBook.getLowestPrice(askEntries) <<std::endl ;
+            std::cout << "Lowest ask for this product: "<< orderBook.getLowestPrice(askEntries) <<std::endl ;
         }
         else std::cout << "No asks for this product" << std::endl;
 
@@ -98,7 +98,7 @@ void merkelMain::printMenu()
         std::cout << "Bids: "<< bidEntries.size() <<std::endl;
         if (bidEntries.size() > 0)
         {
-            std::cout << "Higest price for this product: "<< orderBook.getHighestPrice(bidEntries) <<std::endl<< std::endl; 
+            std::cout << "Higest bid for this product: "<< orderBook.getHighestPrice(bidEntries) <<std::endl<< std::endl; 
         }
         else std::cout << "No bids for this product " << std::endl<< std::endl;
     }
@@ -161,24 +161,32 @@ void merkelMain::printMenu()
     if (tokens.size() != 3 ) std::cout<< "Bad line !" << std::endl << "orderbBookEntryUser: Data doesnt match an bid offer, ignore"<< std::endl;
     else
     {
-        try{
-        bool existProduct = false; 
-        orderBookEntry userBid = CSVReader::stringToObeUI(tokens, OrderBookType::bid,currnetTime);
-        for(const std::string& p : orderBook.getKnownProducts())
+        try
         {
-            if (userBid.products == p ) 
+            bool existProduct = false; 
+            orderBookEntry userBid = CSVReader::stringToObeUI(tokens, OrderBookType::bid,currnetTime);
+            for(const std::string& p : orderBook.getKnownProducts())
             {
-                existProduct = true;
-                break;
+                if (userBid.products == p ) 
+                {
+                    existProduct = true;
+                    break;
+                }
             }
-        }
-        if (existProduct && Wallet.currencyAmmountCheck(CSVReader::tokenise(userBid.products, '/').at(1),userBid.price))
-        {
-        std::cout << userBid.ammount<< ", " << userBid.price << std::endl;
-        userBid.userName = "simuser";
-        orderBook.insertOrder(userBid);
-        }
-        else std::cout<< "orderbBookEntryUser: Unknown product, ignore" << std::endl;
+            
+            if (!existProduct)
+            {
+                std::cout<< "orderbBookEntryUser: Unknown product, ignore" << std::endl;
+                return;
+            }
+
+            if (existProduct && Wallet.currencyAmmountCheck(CSVReader::tokenise(userBid.products, '/').at(1),userBid.price))
+            {
+                std::cout <<"A bid to buy " << userBid.ammount<< " " << CSVReader::tokenise(userBid.products, '/').at(0)
+                << " in exchange for " << userBid.price << " " << CSVReader::tokenise(userBid.products, '/').at(1) <<  " per unit recieved"<<std::endl;
+                userBid.userName = "simuser";
+                orderBook.insertOrder(userBid);
+            }
         }
         catch (const std::exception& e)
         {
@@ -202,7 +210,7 @@ void merkelMain::printMenu()
     std::getline(std::cin,input);
 
     std::vector<std::string> tokens = CSVReader::tokenise(input,',');
-    if (tokens.size() != 2) std::cout<< "Bad line !" << std::endl << "orderbBookEntryUser: Data is not valid"<< std::endl;
+    if (tokens.size() != 2) std::cout<< "Bad line !" << std::endl << "addToWallet: Data is not valid"<< std::endl;
     else
     {
         try
@@ -210,7 +218,7 @@ void merkelMain::printMenu()
             bool existProduct = false;    
             for(const std::string& p : orderBook.getKnownProducts())
             {
-                if (tokens.at(0) == CSVReader::tokenise(p, '/').at(0) || tokens.at(0) == CSVReader::tokenise(p, '/').at(1)  ) 
+                if (tokens.at(0) == CSVReader::tokenise(p, '/').at(0) || tokens.at(0) == CSVReader::tokenise(p, '/').at(1)) 
                 {
                     existProduct = true;
                     break;
@@ -238,7 +246,7 @@ void merkelMain::printMenu()
 
  void merkelMain::nextTimeFrame ()
  {
-    std::cout << "Going to next time frame" << std::endl << std::endl;
+    std::cout << "Moving to next time frame" << std::endl << std::endl;
     for (std::string const& s : orderBook.getKnownProducts())
         {
            std::vector<orderBookEntry> sales =  orderBook.matchAskToBid(currnetTime, s);
